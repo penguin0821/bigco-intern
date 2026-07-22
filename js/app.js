@@ -634,7 +634,7 @@ const Game = {
       bodyEl.appendChild(p);
       await this.typeParagraph(paragraphs[i], p);
       // 每段之间停顿一下
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 300));
       // 自动滚动到底部
       bodyEl.scrollTop = bodyEl.scrollHeight;
     }
@@ -652,7 +652,7 @@ const Game = {
       } else {
         el.innerHTML += chars[i];
       }
-      await new Promise(r => setTimeout(r, 45));
+      await new Promise(r => setTimeout(r, 25));
     }
   },
 
