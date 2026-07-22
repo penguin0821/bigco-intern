@@ -601,7 +601,7 @@ const Game = {
     clearTimeout(this.titleClickTimer);
     this.titleClickTimer = setTimeout(() => { this.titleClickCount = 0; }, 1500);
 
-    if (this.titleClickCount >= 5) {
+    if (this.titleClickCount >= 4) {
       this.titleClickCount = 0;
       this.showEasteregg();
     }
