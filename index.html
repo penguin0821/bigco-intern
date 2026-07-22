@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大厂实习生存指南</title>
+  <meta name="description" content="一款关于互联网大厂工作与实习的互动流游戏">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- CRT 扫描线覆盖层 -->
+  <div id="crt-overlay"></div>
+
+  <!-- 标题画面 -->
+  <div id="title-screen" class="screen active">
+    <div class="title-container">
+      <div class="pixel-border">
+        <h1 class="game-title glitch" data-text="大厂实习生存指南">大厂实习生存指南</h1>
+      </div>
+      <p class="subtitle typewriter">你的每一个选择，都将改写命运...</p>
+      <div class="title-buttons">
+        <button class="pixel-btn" onclick="Game.startNew()">▶ 新游戏</button>
+        <button class="pixel-btn" id="btn-continue" onclick="Game.loadGame()" style="display:none">▶ 继续游戏</button>
+        <button class="pixel-btn" onclick="Game.showEndings()">▶ 结局收集</button>
+        <button class="pixel-btn pixel-btn-guide" onclick="Game.showGuideWarning()">📖 游戏手册</button>
+      </div>
+      <div class="title-footer">
+        <span class="blink">▼ 按下开始 ▼</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 游戏主画面 -->
+  <div id="game-screen" class="screen">
+    <!-- 顶部属性栏 -->
+    <div id="stats-bar">
+      <div class="stat-item">
+        <span class="stat-icon">⚡</span>
+        <span class="stat-label">能力</span>
+        <div class="pixel-progress"><div class="pixel-progress-fill" id="stat-ability"></div></div>
+        <span class="stat-val" id="val-ability">50</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🤝</span>
+        <span class="stat-label">人脉</span>
+        <div class="pixel-progress"><div class="pixel-progress-fill" id="stat-connection"></div></div>
+        <span class="stat-val" id="val-connection">50</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">💚</span>
+        <span class="stat-label">心态</span>
+        <div class="pixel-progress"><div class="pixel-progress-fill" id="stat-mental"></div></div>
+        <span class="stat-val" id="val-mental">50</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">❤️</span>
+        <span class="stat-label">体力</span>
+        <div class="pixel-progress"><div class="pixel-progress-fill" id="stat-energy"></div></div>
+        <span class="stat-val" id="val-energy">50</span>
+      </div>
+      <button class="pixel-btn-small" onclick="Game.showRewind()" title="回溯">⏪</button>
+      <button class="pixel-btn-small" onclick="Game.showMenu()" title="菜单">☰</button>
+    </div>
+
+    <!-- 剧情区域 -->
+    <div id="story-area">
+      <div id="scene-image" class="scene-image"></div>
+      <div id="story-text" class="story-text"></div>
+    </div>
+
+    <!-- 选项区域 -->
+    <div id="choices-area"></div>
+
+    <!-- 跳过提示 -->
+    <div id="skip-hint" class="skip-hint">
+      <span class="skip-hint-icon">▶▶</span>
+      <span class="skip-hint-text">点击屏幕跳过动画</span>
+    </div>
+  </div>
+
+  <!-- 回溯面板 -->
+  <div id="rewind-panel" class="rewind-panel">
+    <div class="rewind-header">
+      <h3>⏪ 时间回溯</h3>
+      <p class="rewind-hint">点击任意节点，回到那一刻重新选择</p>
+      <button class="pixel-btn-small" onclick="Game.closeRewind()">✕</button>
+    </div>
+    <div class="rewind-list" id="rewind-list"></div>
+  </div>
+  <div id="rewind-backdrop" class="rewind-backdrop" onclick="Game.closeRewind()"></div>
+
+  <!-- 结局画面 -->
+  <div id="ending-screen" class="screen">
+    <div class="ending-card">
+      <div class="ending-type" id="ending-type"></div>
+      <div class="ending-illustration" id="ending-illust"></div>
+      <h2 class="ending-title" id="ending-title"></h2>
+      <div class="ending-text" id="ending-text"></div>
+      <div class="ending-achievement" id="ending-achievement"></div>
+      <div class="ending-buttons">
+        <button class="pixel-btn" onclick="Game.rewindFromEnding()">⏪ 回溯到之前</button>
+        <button class="pixel-btn" onclick="Game.startNew()">↻ 重新开始</button>
+        <button class="pixel-btn" onclick="Game.showEndings()">📖 结局收集</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结局收集册 -->
+  <div id="endings-gallery" class="screen">
+    <div class="gallery-container">
+      <h2 class="gallery-title">📖 结局收集册</h2>
+      <p class="gallery-count" id="gallery-count">已解锁: 0 / 12</p>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <button class="pixel-btn" onclick="Game.backToTitle()">← 返回标题</button>
+    </div>
+  </div>
+
+  <!-- 结局详情弹窗 -->
+  <div id="ending-detail-modal" class="modal ending-detail-modal" onclick="if(event.target===this)Game.closeEndingDetail()">
+    <div class="ending-detail-content">
+      <button class="ending-detail-close" onclick="Game.closeEndingDetail()">✕</button>
+      <div class="ending-detail-image" id="ending-detail-image"></div>
+      <div class="ending-detail-type" id="ending-detail-type"></div>
+      <h2 class="ending-detail-title" id="ending-detail-title"></h2>
+      <div class="ending-detail-text" id="ending-detail-text"></div>
+      <div class="ending-detail-achievement" id="ending-detail-achievement"></div>
+    </div>
+  </div>
+
+  <!-- 菜单弹窗 -->
+  <div id="menu-modal" class="modal">
+    <div class="modal-content pixel-border">
+      <h3>⏸ 暂停菜单</h3>
+      <button class="pixel-btn" onclick="Game.resumeGame()">▶ 继续游戏</button>
+      <button class="pixel-btn" onclick="Game.saveGame()">💾 保存进度</button>
+      <button class="pixel-btn" onclick="Game.loadGame()">📂 读取存档</button>
+      <button class="pixel-btn" onclick="Game.startNew()">↻ 重新开始</button>
+      <button class="pixel-btn" onclick="Game.backToTitle()">🏠 返回标题</button>
+    </div>
+  </div>
+
+  <!-- 游戏手册 -->
+  <div id="guide-screen" class="screen">
+    <div class="guide-container">
+      <h2 class="guide-title">📖 游戏手册 — 结局攻略</h2>
+      <p class="guide-subtitle">每个结局的达成路径一览，助你探索所有命运</p>
+      <div class="guide-list" id="guide-list"></div>
+      <button class="pixel-btn" onclick="Game.backToTitle()">← 返回标题</button>
+    </div>
+  </div>
+
+  <!-- 剧透警告弹窗 -->
+  <div id="spoiler-modal" class="modal">
+    <div class="modal-content pixel-border spoiler-content">
+      <div class="spoiler-icon">⚠️</div>
+      <h3>剧透警告</h3>
+      <p>游戏手册包含所有结局的达成路径，可能会降低首次探索的乐趣。</p>
+      <p class="spoiler-hint">建议先自己玩一遍，体验不同的选择带来的惊喜 ✨</p>
+      <div class="spoiler-buttons">
+        <button class="pixel-btn" onclick="Game.confirmGuide()">我不怕剧透，给我看！</button>
+        <button class="pixel-btn pixel-btn-secondary" onclick="Game.closeSpoiler()">算了，先去玩</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 场景过渡 -->
+  <div id="transition-overlay" class="transition-overlay"></div>
+
+  <script src="js/story.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/endings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# IDE / Editor
+.aicoding-chat-workspace
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+__MACOSX/
+
+# Reference materials
+flow-game-ref/
