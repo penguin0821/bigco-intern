@@ -588,6 +588,78 @@ const Game = {
       `;
       listEl.appendChild(card);
     });
+  },
+
+  // === 彩蛋 ===
+
+  titleClickCount: 0,
+  titleClickTimer: null,
+
+  titleClick() {
+    this.titleClickCount++;
+    // 重置计时器，1.5秒内需要连续点击
+    clearTimeout(this.titleClickTimer);
+    this.titleClickTimer = setTimeout(() => { this.titleClickCount = 0; }, 1500);
+
+    if (this.titleClickCount >= 5) {
+      this.titleClickCount = 0;
+      this.showEasteregg();
+    }
+  },
+
+  async showEasteregg() {
+    await UI.switchScreen('title-screen', 'easteregg-screen');
+
+    const bodyEl = document.getElementById('easteregg-body');
+    const footerEl = document.getElementById('easteregg-footer');
+    bodyEl.innerHTML = '';
+    footerEl.style.display = 'none';
+
+    const paragraphs = [
+      '2026年的夏天，我和陈旭都在实习。',
+      '他在一家大厂做算法，我在另一家公司写后端。我们每天晚上回到宿舍，互相倒苦水。',
+      '"今天又被leader骂了。"\n"我今天写的代码被review打回来了。"\n"我mentor今天问我是不是想辞职。"',
+      '我们会聊到很晚，聊加班、聊焦虑、聊那些比我们强的同事、聊我们到底适不适合这一行。',
+      '有一天陈旭说："要是能把这些破事做成一个游戏就好了。"',
+      '我说："行，那我们就做。"',
+      '于是就有了你现在玩的这个游戏。',
+      '每一个剧情节点，都藏着我们真实的经历。那些失眠的深夜、被否定的方案、工位上的泡面、mentor不经意的一句鼓励……',
+      '我们不是游戏开发者，我们只是两个正在经历这一切的实习生。',
+      '如果你也在经历类似的迷茫和不安，希望这个游戏能让你觉得——',
+      '你不是一个人。'
+    ];
+
+    // 逐段打字显示
+    for (let i = 0; i < paragraphs.length; i++) {
+      const p = document.createElement('p');
+      p.className = 'easteregg-paragraph';
+      bodyEl.appendChild(p);
+      await this.typeParagraph(paragraphs[i], p);
+      // 每段之间停顿一下
+      await new Promise(r => setTimeout(r, 600));
+      // 自动滚动到底部
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+    }
+
+    // 显示底部
+    footerEl.style.display = 'block';
+    footerEl.classList.add('fade-in');
+  },
+
+  async typeParagraph(text, el) {
+    const chars = text.split('');
+    for (let i = 0; i < chars.length; i++) {
+      if (chars[i] === '\n') {
+        el.innerHTML += '<br>';
+      } else {
+        el.innerHTML += chars[i];
+      }
+      await new Promise(r => setTimeout(r, 45));
+    }
+  },
+
+  async closeEasteregg() {
+    await UI.switchScreen('easteregg-screen', 'title-screen');
   }
 };
 

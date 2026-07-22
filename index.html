@@ -17,7 +17,7 @@
   <div id="title-screen" class="screen active">
     <div class="title-container">
       <div class="pixel-border">
-        <h1 class="game-title glitch" data-text="大厂实习生存指南">大厂实习生存指南</h1>
+        <h1 class="game-title glitch" data-text="大厂实习生存指南" id="game-title" onclick="Game.titleClick()">大厂实习生存指南</h1>
       </div>
       <p class="subtitle typewriter">你的每一个选择，都将改写命运...</p>
       <div class="title-buttons">
@@ -161,6 +161,26 @@
       <div class="spoiler-buttons">
         <button class="pixel-btn" onclick="Game.confirmGuide()">我不怕剧透，给我看！</button>
         <button class="pixel-btn pixel-btn-secondary" onclick="Game.closeSpoiler()">算了，先去玩</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彩蛋页面 -->
+  <div id="easteregg-screen" class="screen">
+    <div class="easteregg-container">
+      <div class="easteregg-content pixel-border">
+        <div class="easteregg-header">
+          <span class="easteregg-tag">// HIDDEN FILE</span>
+          <span class="easteregg-date">2026.07</span>
+        </div>
+        <h2 class="easteregg-title">这个故事，是真的。</h2>
+        <div class="easteregg-body" id="easteregg-body"></div>
+        <div class="easteregg-footer" id="easteregg-footer" style="display:none">
+          <div class="easteregg-divider">— — —</div>
+          <p class="easteregg-credit">Made with 💜 by <span class="highlight-name">张恒玮</span> & <span class="highlight-name">陈旭</span></p>
+          <p class="easteregg-note">两个在2026年夏天，一边焦虑一边做游戏的人。</p>
+          <button class="pixel-btn" onclick="Game.closeEasteregg()">← 回到标题</button>
+        </div>
       </div>
     </div>
   </div>

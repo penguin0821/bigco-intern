@@ -111,6 +111,20 @@ body {
     6px 6px 0 rgba(0,0,0,0.3);
   letter-spacing: 0.1em;
   margin-bottom: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.game-title:active {
+  animation: glitchShake 0.15s ease;
+}
+
+@keyframes glitchShake {
+  0% { transform: translate(0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(2px, -1px); }
+  75% { transform: translate(-1px, -1px); }
+  100% { transform: translate(0); }
 }
 
 .subtitle {
@@ -1312,4 +1326,132 @@ body {
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+/* ============================================
+   彩蛋页面
+   ============================================ */
+
+#easteregg-screen {
+  background: var(--bg-dark);
+  overflow-y: auto;
+}
+
+#easteregg-screen.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.easteregg-container {
+  width: 100%;
+  max-width: 640px;
+}
+
+.easteregg-content {
+  padding: 32px;
+  background: linear-gradient(180deg, #12122a 0%, #0f0f24 100%);
+  border-color: #4a3f8a;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.15), inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.easteregg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  opacity: 0.6;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+}
+
+.easteregg-tag {
+  color: #8b5cf6;
+}
+
+.easteregg-date {
+  color: #64748b;
+}
+
+.easteregg-title {
+  font-size: 1.4rem;
+  color: #c4b5fd;
+  margin-bottom: 28px;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+}
+
+.easteregg-body {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  scroll-behavior: smooth;
+}
+
+.easteregg-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.easteregg-body::-webkit-scrollbar-thumb {
+  background: #4a3f8a;
+  border-radius: 2px;
+}
+
+.easteregg-paragraph {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.3s ease;
+}
+
+.easteregg-paragraph:last-child {
+  color: #e0e0ff;
+  font-weight: 500;
+}
+
+.easteregg-footer {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.easteregg-footer.fade-in {
+  animation: fadeInUp 0.6s ease;
+}
+
+.easteregg-divider {
+  color: #4a3f8a;
+  margin: 20px 0;
+  letter-spacing: 0.5em;
+  font-size: 0.8rem;
+}
+
+.easteregg-credit {
+  font-size: 1rem;
+  color: #a78bfa;
+  margin-bottom: 8px;
+}
+
+.highlight-name {
+  color: #c4b5fd;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(167, 139, 250, 0.4);
+}
+
+.easteregg-note {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
